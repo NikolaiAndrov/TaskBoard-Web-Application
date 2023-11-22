@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TaskBoard.Data.Models\TaskBoard.Data.Models.csproj" />
+  </ItemGroup>
+
 </Project>
