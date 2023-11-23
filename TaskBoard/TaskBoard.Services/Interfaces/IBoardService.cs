@@ -5,5 +5,7 @@
     public interface IBoardService
     {
         Task<ICollection<BoardViewModel>> AllAsync();
+
+        Task<ICollection<TaskBoardModel>> GetBoardsForTaskCreatingAsync();
     }
 }

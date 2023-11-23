@@ -35,5 +35,18 @@
 
             return boards;
         }
-    }
+
+		public async Task<ICollection<TaskBoardModel>> GetBoardsForTaskCreatingAsync()
+		{
+            ICollection<TaskBoardModel> boards = await dbContext.Boards
+                .Select(b => new TaskBoardModel
+                {
+                    Id = b.Id,
+                    Name = b.Name
+                })
+                .ToArrayAsync();
+
+            return boards;
+		}
+	}
 }

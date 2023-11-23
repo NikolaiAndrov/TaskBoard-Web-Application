@@ -2,7 +2,8 @@
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using TaskBoard.Services.Interfaces;
+	using System.Security.Claims;
+	using TaskBoard.Services.Interfaces;
     using TaskBoard.ViewModels.Board;
 
     [Authorize]

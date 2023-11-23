@@ -1,8 +1,8 @@
 ﻿@model ICollection<BoardViewModel>
 @{
-	ViewData["Title"] = "Task Board";
+	ViewData["Title"] = "TaskBoard";
 }
-<h2 class="text-center">@ViewBag.Title</h2>
+<h2 class="text-center">@ViewData["Title"]</h2>
 <hr />
 @if (!Model.Any())
 {
