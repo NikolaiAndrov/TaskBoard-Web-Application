@@ -48,5 +48,10 @@
 
             return boards;
 		}
-	}
+
+        public async Task<bool> IsBoadrdExistingAsync(TaskFormModel model)
+        {
+            return await dbContext.Boards.AnyAsync(b => b.Id == model.BoardId);
+        }
+    }
 }

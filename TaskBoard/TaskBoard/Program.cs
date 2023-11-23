@@ -33,6 +33,7 @@ namespace TaskBoard
 
 			//Add Custom Services
 			builder.Services.AddScoped<IBoardService, BoardService>();
+			builder.Services.AddScoped<ITaskService, TaskService>();
 
 			var app = builder.Build();
 
