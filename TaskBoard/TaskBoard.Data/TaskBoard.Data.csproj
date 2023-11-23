@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TaskBoard.Data.Configuration\TaskBoard.Data.Configuration.csproj" />
     <ProjectReference Include="..\TaskBoard.Data.Models\TaskBoard.Data.Models.csproj" />
   </ItemGroup>
 
