@@ -3,8 +3,10 @@ namespace TaskBoard
 	using Microsoft.AspNetCore.Identity;
 	using Microsoft.EntityFrameworkCore;
 	using TaskBoard.Data;
+    using TaskBoard.Services;
+    using TaskBoard.Services.Interfaces;
 
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
@@ -28,6 +30,9 @@ namespace TaskBoard
             })
 			.AddEntityFrameworkStores<TaskBoardDbContext>();
 			builder.Services.AddControllersWithViews();
+
+			//Add Custom Services
+			builder.Services.AddScoped<IBoardService, BoardService>();
 
 			var app = builder.Build();
 
