@@ -1,18 +1,29 @@
 namespace TaskBoard.Controllers
 {
+	using Microsoft.AspNetCore.Authorization;
 	using Microsoft.AspNetCore.Mvc;
 	using System.Diagnostics;
+	using System.Security.Claims;
+	using TaskBoard.Services.Interfaces;
 	using TaskBoard.ViewModels;
+	using TaskBoard.ViewModels.Home;
 
+	[Authorize]
 	public class HomeController : Controller
 	{
-		public HomeController()
+		private readonly IHomeService homeService;
+
+		public HomeController(IHomeService homeService)
 		{
+			this.homeService = homeService;
 		}
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			return View();
+			string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+			HomeViewModel model = await homeService.DisplayHomeAsync(userId);
+
+			return View(model);
 		}
 
 		public IActionResult Privacy()
