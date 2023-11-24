@@ -93,5 +93,38 @@
 
             await dbContext.SaveChangesAsync();
 		}
+
+		public async Task<BoardTaskViewModel> DeleteTaskAsync(int Id, string userId, string userName)
+		{
+            BoardTask task = await dbContext.Tasks.FirstAsync(t => t.Id == Id);
+
+            if (task.OwnerId != userId)
+            {
+                throw new InvalidOperationException();
+            }
+
+            BoardTaskViewModel viewModel = new BoardTaskViewModel
+            {
+                Id = task.Id,
+                Title = task.Title,
+                Description = task.Description,
+                Owner = userName
+            };
+
+            return viewModel;
+		}
+
+		public async Task DeleteTaskAsync(string userId, BoardTaskViewModel model)
+		{
+			BoardTask task = await dbContext.Tasks.FirstAsync(t => t.Id == model.Id);
+
+            if (task.OwnerId != userId)
+            {
+                throw new InvalidOperationException();
+            }
+
+            dbContext.Tasks.Remove(task);
+            await dbContext.SaveChangesAsync();
+        }
 	}
 }

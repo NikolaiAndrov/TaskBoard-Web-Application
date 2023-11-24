@@ -2,7 +2,8 @@
 {
 	using Microsoft.AspNetCore.Authorization;
 	using Microsoft.AspNetCore.Mvc;
-    using System.Security.Claims;
+	using Microsoft.EntityFrameworkCore.Metadata.Builders;
+	using System.Security.Claims;
     using TaskBoard.Services.Interfaces;
 	using TaskBoard.ViewModels.Board;
 	using TaskBoard.ViewModels.BoardTask;
@@ -20,6 +21,7 @@
 
         }
 
+		[HttpGet]
         public async Task<IActionResult> Create()
 		{
 			ICollection<TaskBoardModel> boards = await boardService.GetBoardsForTaskCreatingAsync();
@@ -61,6 +63,7 @@
 			return RedirectToAction("All", "Board");
         }
 
+		[HttpGet]
 		public async Task<IActionResult> Details(int Id)
 		{
 			TaskDetailViewModel task;
@@ -77,6 +80,7 @@
 			return View(task);
 		}
 
+		[HttpGet]
 		public async Task<IActionResult> Edit(int Id)
 		{
 			TaskFormModel model;
@@ -108,6 +112,42 @@
 			{
 				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 				await taskService.EditTaskAsync(Id, userId, taskForm);
+			}
+			catch (Exception)
+			{
+				return RedirectToAction("All", "Board");
+			}
+
+			return RedirectToAction("All", "Board");
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Delete(int id)
+		{
+			BoardTaskViewModel viewModel;
+
+			try
+			{
+				string userName = this.User.Identity!.Name!;
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+				viewModel = await taskService.DeleteTaskAsync(id, userId, userName);
+
+			}
+			catch (Exception)
+			{
+				return RedirectToAction("All", "Board");
+			}
+
+			return View(viewModel);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Delete(BoardTaskViewModel model)
+		{
+			try
+			{
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+				await taskService.DeleteTaskAsync(userId, model);
 			}
 			catch (Exception)
 			{
