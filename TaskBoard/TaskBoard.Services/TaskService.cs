@@ -10,10 +10,12 @@
     public class TaskService : ITaskService
     {
         private readonly TaskBoardDbContext dbContext;
+        private readonly IBoardService boardService;
 
-        public TaskService(TaskBoardDbContext dbContext)
+        public TaskService(TaskBoardDbContext dbContext, IBoardService boardService)
         {
             this.dbContext = dbContext;
+            this.boardService = boardService;
         }
 
         public async Task CreateTaskAsync(TaskFormModel model, string ownerId)
@@ -68,5 +70,28 @@
 
             return taskFormModel;
         }
+
+		public async Task EditTaskAsync(int Id, string userId, TaskFormModel taskForm)
+		{
+            BoardTask task = await dbContext.Tasks.FirstAsync(t => t.Id == Id);
+
+            if (task.OwnerId != userId)
+            {
+                throw new InvalidOperationException();
+            }
+
+            bool isBoardExisting = await boardService.IsBoadrdExistingAsync(taskForm);
+
+			if (!isBoardExisting)
+            {
+				throw new InvalidOperationException();
+			}
+
+            task.Title = taskForm.Title;
+            task.Description = taskForm.Description;
+            task.BoardId = taskForm.BoardId;
+
+            await dbContext.SaveChangesAsync();
+		}
 	}
 }

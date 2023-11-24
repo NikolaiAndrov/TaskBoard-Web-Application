@@ -94,5 +94,27 @@
 
 			return View(model);
 		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(int Id, TaskFormModel taskForm)
+		{
+			if (!ModelState.IsValid)
+			{
+				taskForm.Boards = await boardService.GetBoardsForTaskCreatingAsync();
+				return View(taskForm);
+			}
+
+			try
+			{
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+				await taskService.EditTaskAsync(Id, userId, taskForm);
+			}
+			catch (Exception)
+			{
+				return RedirectToAction("All", "Board");
+			}
+
+			return RedirectToAction("All", "Board");
+		}
 	}
 }
