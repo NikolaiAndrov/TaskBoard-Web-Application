@@ -19,20 +19,3 @@ To use the TaskBoard web application:
     Managing Tasks:
         Task Owners: Owners can view, delete, and edit their tasks.
         Non-Owners: Can only view tasks.
-
-Setup
-Prerequisites
-
-    .NET 8 SDK
-    Visual Studio (or another preferred code editor)
-
-Installation
-
-    Clone the repository.
-    Open the solution file in Visual Studio.
-    Restore NuGet packages and build the solution.
-
-Running the Application
-
-    Set the TaskBoard project as the startup project.
-    Run the application.
