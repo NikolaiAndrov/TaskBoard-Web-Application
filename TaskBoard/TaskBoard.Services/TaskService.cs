@@ -1,5 +1,6 @@
 ﻿namespace TaskBoard.Services
 {
+    using Microsoft.EntityFrameworkCore;
     using System.Threading.Tasks;
     using TaskBoard.Data;
     using TaskBoard.Data.Models;
@@ -28,6 +29,24 @@
 
             await dbContext.Tasks.AddAsync(taskToAdd);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<TaskDetailViewModel> TaskInfoAsync(int Id)
+        {
+            TaskDetailViewModel task = await dbContext.Tasks
+                .Where(t => t.Id == Id)
+                .Select(t => new TaskDetailViewModel 
+                {
+                    Id = t.Id,
+                    Title = t.Title,
+                    Description = t.Description,
+                    CreatedOn = t.CreatedOn.ToString("f"),
+                    Board = t.Board.Name,
+                    Owner = t.Owner.UserName!
+                })
+                .FirstAsync();
+
+            return task;
         }
     }
 }

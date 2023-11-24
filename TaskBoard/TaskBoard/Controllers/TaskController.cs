@@ -60,5 +60,21 @@
 
 			return RedirectToAction("All", "Board");
         }
+
+		public async Task<IActionResult> Details(int Id)
+		{
+			TaskDetailViewModel task;
+
+            try
+			{
+				task = await taskService.TaskInfoAsync(Id);
+			}
+			catch (Exception)
+			{
+				return RedirectToAction("All", "Board");
+			}
+
+			return View(task);
+		}
 	}
 }
