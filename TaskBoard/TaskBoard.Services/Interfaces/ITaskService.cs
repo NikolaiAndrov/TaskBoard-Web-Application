@@ -7,5 +7,7 @@
         Task CreateTaskAsync(TaskFormModel model, string ownerId);
 
         Task<TaskDetailViewModel> TaskInfoAsync(int Id);
+
+        Task<TaskFormModel> GetByIdForEdit(int Id, string userId);
     }
 }

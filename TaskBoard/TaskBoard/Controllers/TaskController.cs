@@ -76,5 +76,23 @@
 
 			return View(task);
 		}
+
+		public async Task<IActionResult> Edit(int Id)
+		{
+			TaskFormModel model;
+
+			try
+			{
+				string userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+				model = await taskService.GetByIdForEdit(Id, userId);
+				model.Boards = await boardService.GetBoardsForTaskCreatingAsync();
+			}
+			catch (Exception)
+			{
+				return RedirectToAction("All", "Board");
+			}
+
+			return View(model);
+		}
 	}
 }

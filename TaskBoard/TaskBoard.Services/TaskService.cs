@@ -31,7 +31,7 @@
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<TaskDetailViewModel> TaskInfoAsync(int Id)
+		public async Task<TaskDetailViewModel> TaskInfoAsync(int Id)
         {
             TaskDetailViewModel task = await dbContext.Tasks
                 .Where(t => t.Id == Id)
@@ -48,5 +48,25 @@
 
             return task;
         }
-    }
+
+		public async Task<TaskFormModel> GetByIdForEdit(int Id, string userId)
+		{
+            BoardTask task = await dbContext.Tasks
+                .FirstAsync(t => t.Id == Id);
+
+            if (task.OwnerId != userId)
+            {
+                throw new InvalidOperationException();
+            }
+
+            TaskFormModel taskFormModel = new TaskFormModel
+            {
+                Title = task.Title,
+                Description = task.Description,
+                BoardId = task.BoardId
+            };
+
+            return taskFormModel;
+        }
+	}
 }
